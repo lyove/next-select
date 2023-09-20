@@ -1,0 +1,511 @@
+:root {
+  // Colors
+  --next-select-primary-color: #5897fb;
+  --next-select-bg-color: #ffffff;
+  --next-select-font-color: #4d4d4d;
+  --next-select-font-placeholder-color: #8d8d8d;
+  --next-select-disabled-color: #dcdee2;
+  --next-select-border-color: #dcdee2;
+  --next-select-highlight-color: #fffb8c;
+  --next-select-success-color: #00b755;
+  --next-select-error-color: #dc3545;
+
+  // Heights
+  --next-select-main-height: 30px;
+  --next-select-content-height: 300px;
+
+  // Spacing
+  --next-select-spacing-l: 7px;
+  --next-select-spacing-m: 5px;
+  --next-select-spacing-s: 3px;
+
+  // Misc
+  --next-select-animation-timing: 0.2s;
+  --next-select-border-radius: 4px;
+}
+
+// Animation keyframes
+@keyframes next-select-valueIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes next-select-valueOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+// Misc classes
+.next-select-hide {
+  display: none !important;
+}
+
+// Main container
+.next-select-main {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  user-select: none;
+  color: var(--next-select-font-color);
+  min-height: var(--next-select-main-height);
+  width: 100%;
+  padding: var(--next-select-spacing-s);
+  cursor: pointer;
+  border: 1px solid var(--next-select-border-color);
+  border-radius: var(--next-select-border-radius);
+  background-color: var(--next-select-bg-color);
+  outline: 0;
+  box-sizing: border-box;
+  transition: background-color var(--next-select-animation-timing);
+  overflow: hidden;
+
+  &:focus {
+    border: 1px solid var(--next-select-primary-color);
+  }
+
+  &.next-select-disabled {
+    background-color: var(--next-select-disabled-color);
+    cursor: not-allowed;
+
+    .next-select-values {
+      .next-select-disabled {
+        color: var(--next-select-font-color);
+      }
+
+      .next-select-value {
+        .next-select-value-delete {
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+  &.next-select-open-above {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+  }
+  &.next-select-open-below {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+
+  .next-select-values {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--next-select-spacing-m);
+    flex: 1 1 100%;
+
+    .next-select-placeholder {
+      display: flex;
+      padding: var(--next-select-spacing-s) var(--next-select-spacing-m) var(--next-select-spacing-s) var(--next-select-spacing-m);
+      margin: auto 0px auto 0px;
+      line-height: 1em;
+      align-items: center;
+      width: 100%;
+      color: var(--next-select-font-placeholder-color);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    // Max is used to display max number of values
+    .next-select-max {
+      display: flex;
+      user-select: none;
+      align-items: center;
+      width: fit-content;
+      font-size: 12px;
+      color: var(--next-select-bg-color);
+      line-height: 1;
+      padding: var(--next-select-spacing-s) var(--next-select-spacing-m);
+      background-color: var(--next-select-primary-color);
+      border-radius: var(--next-select-border-radius);
+    }
+
+    // Used for single select selected value
+    .next-select-single {
+      display: flex;
+      margin: auto 0px auto var(--next-select-spacing-s);
+    }
+
+    // Used for the selected values
+    .next-select-value {
+      display: flex;
+      user-select: none;
+      align-items: center;
+      width: fit-content;
+      background-color: var(--next-select-primary-color);
+      border-radius: var(--next-select-border-radius);
+      animation-name: next-select-valueIn;
+      animation-duration: var(--next-select-animation-timing);
+      animation-timing-function: ease-out;
+      animation-fill-mode: both;
+
+      &.next-select-value-out {
+        animation-name: next-select-valueOut;
+        animation-duration: var(--next-select-animation-timing);
+        animation-timing-function: ease-out;
+      }
+
+      .next-select-value-text {
+        font-size: 12px;
+        color: var(--next-select-bg-color);
+        line-height: 1;
+        padding: var(--next-select-spacing-s) var(--next-select-spacing-m);
+      }
+
+      .next-select-value-delete {
+        display: flex;
+        align-items: center;
+        height: var(--next-select-spacing-l);
+        width: var(--next-select-spacing-l);
+        padding: var(--next-select-spacing-s) var(--next-select-spacing-m);
+        cursor: pointer;
+        border-left: solid 1px var(--next-select-bg-color);
+        box-sizing: content-box;
+
+        svg {
+          height: var(--next-select-spacing-l);
+          width: var(--next-select-spacing-l);
+
+          path {
+            fill: none;
+            stroke: var(--next-select-bg-color);
+            stroke-width: 18;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+          }
+        }
+      }
+    }
+  }
+
+  .next-select-deselect {
+    display: flex;
+    align-self: center;
+    justify-content: flex-end;
+    flex: 0 1 auto;
+    width: 8px;
+    height: 8px;
+    margin: 0 var(--next-select-spacing-m) 0 var(--next-select-spacing-m);
+
+    svg {
+      width: 8px;
+      height: 8px;
+
+      path {
+        fill: none;
+        stroke: var(--next-select-font-color);
+        opacity: 0.5;
+        stroke-width: 12;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+    }
+  }
+
+  .next-select-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 0 1 auto;
+    width: 12px;
+    height: 12px;
+    margin: auto var(--next-select-spacing-m) auto var(--next-select-spacing-m);
+
+    path {
+      fill: none;
+      opacity: 0.5;
+      stroke: var(--next-select-font-color);
+      stroke-width: 12;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition-timing-function: ease-out;
+      transition: var(--next-select-animation-timing);
+    }
+  }
+}
+
+// Content container
+.next-select-content {
+  position: absolute; // default position
+  display: flex;
+  height: auto;
+  flex-direction: column;
+  width: auto;
+  max-height: var(--next-select-content-height);
+  box-sizing: border-box;
+  border: solid 1px var(--next-select-border-color);
+  background-color: var(--next-select-bg-color);
+  transition: transform var(--next-select-animation-timing), opacity var(--next-select-animation-timing);
+  opacity: 0;
+  transform: scaleY(0);
+  transform-origin: center top;
+  overflow: hidden;
+  z-index: 10000;
+
+  &.next-select-relative {
+    position: relative;
+    height: 100%;
+  }
+
+  &.next-select-open-above {
+    flex-direction: column-reverse;
+    opacity: 1;
+    transform: scaleY(1);
+    transform-origin: center bottom;
+    border-top-left-radius: var(--next-select-border-radius);
+    border-top-right-radius: var(--next-select-border-radius);
+  }
+
+  &.next-select-open-below {
+    opacity: 1;
+    transform: scaleY(1);
+    transform-origin: center top;
+    border-bottom-left-radius: var(--next-select-border-radius);
+    border-bottom-right-radius: var(--next-select-border-radius);
+  }
+
+  .next-select-search {
+    flex: 0 1 auto;
+    display: flex;
+    flex-direction: row;
+    padding: var(--next-select-spacing-l) var(--next-select-spacing-l) var(--next-select-spacing-m) var(--next-select-spacing-l);
+
+    input {
+      display: inline-flex;
+      font-size: inherit;
+      line-height: inherit;
+      flex: 1 1 auto;
+      width: 100%;
+      min-width: 0px;
+      padding: var(--next-select-spacing-m) var(--next-select-spacing-l);
+      margin: 0;
+      border: 1px solid var(--next-select-border-color);
+      border-radius: var(--next-select-border-radius);
+      background-color: var(--next-select-bg-color);
+      outline: 0;
+      text-align: left;
+      box-sizing: border-box;
+
+      &::placeholder {
+        color: var(--next-select-font-placeholder-color);
+        vertical-align: middle;
+      }
+
+      &:focus {
+        border: 1px solid var(--next-select-primary-color);
+      }
+    }
+
+    .next-select-addable {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      flex: 0 0 auto;
+      height: auto;
+      margin: 0 0 0 var(--next-select-spacing-m);
+      border: 1px solid var(--next-select-border-color);
+      border-radius: var(--next-select-border-radius);
+
+      svg {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex: 0 1 auto;
+        width: 12px;
+        height: 12px;
+        margin: auto var(--next-select-spacing-m) auto var(--next-select-spacing-m);
+
+        path {
+          fill: none;
+          stroke: var(--next-select-font-color);
+          stroke-width: 18;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+        }
+      }
+    }
+  }
+
+  .next-select-list {
+    flex: 1 1 auto;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    .next-select-error {
+      color: var(--next-select-error-color);
+      padding: var(--next-select-spacing-l);
+    }
+
+    .next-select-searching {
+      color: var(--next-select-font-color);
+      padding: var(--next-select-spacing-l);
+    }
+
+    .next-select-optgroup {
+      // If optgroup is open, show the options
+      &.next-select-open {
+        .next-select-option {
+        }
+      }
+
+      // If optgroup has close, hide all options
+      &.next-select-close {
+        .next-select-option {
+          display: none !important;
+        }
+      }
+
+      .next-select-optgroup-label {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--next-select-spacing-m) var(--next-select-spacing-l) var(--next-select-spacing-m) var(--next-select-spacing-l);
+
+        .next-select-optgroup-label-text {
+          flex: 1 1 auto;
+          font-weight: bold;
+          color: var(--next-select-font-color);
+        }
+
+        // If optgroup has arrow, make label clickable
+        &:has(.next-select-arrow) {
+          cursor: pointer;
+        }
+
+        .next-select-optgroup-actions {
+          flex: 0 1 auto;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          gap: var(--next-select-spacing-m);
+
+          .next-select-selectall {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: row;
+            cursor: pointer;
+
+            &:hover {
+              opacity: 0.5;
+            }
+
+            &.next-select-selected {
+              svg {
+                path {
+                  stroke: var(--next-select-error-color);
+                }
+              }
+            }
+
+            span {
+              flex: 0 1 auto;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: calc(100% * 0.6);
+              text-align: center;
+              padding: 0 var(--next-select-spacing-s) 0 0;
+            }
+
+            svg {
+              flex: 0 1 auto;
+              width: 13px;
+              height: 13px;
+
+              path {
+                fill: none;
+                stroke: var(--next-select-success-color);
+                stroke-linecap: round;
+                stroke-linejoin: round;
+              }
+
+              &:first-child {
+                stroke-width: 5;
+              }
+              &:last-child {
+                stroke-width: 11;
+              }
+            }
+          }
+
+          .next-select-closable {
+            flex: 0 1 auto;
+            display: flex;
+            flex-direction: row;
+            cursor: pointer;
+
+            .next-select-arrow {
+              flex: 1 1 auto;
+              width: 10px;
+              height: 10px;
+
+              path {
+                fill: none;
+                stroke: var(--next-select-font-color);
+                stroke-width: 18;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                transition-timing-function: ease-out;
+                transition: var(--next-select-animation-timing);
+              }
+            }
+          }
+        }
+      }
+
+      .next-select-option {
+        padding: var(--next-select-spacing-s) var(--next-select-spacing-s) var(--next-select-spacing-s) calc(var(--next-select-spacing-l) * 3);
+      }
+    }
+
+    .next-select-option {
+      display: flex;
+      padding: var(--next-select-spacing-m) var(--next-select-spacing-l) var(--next-select-spacing-m) var(--next-select-spacing-l);
+      color: var(--next-select-font-color);
+      cursor: pointer;
+      user-select: none;
+
+      &:hover {
+        color: var(--next-select-bg-color);
+        background-color: var(--next-select-primary-color);
+      }
+
+      &.next-select-highlighted,
+      &:not(.next-select-disabled).next-select-selected {
+        color: var(--next-select-bg-color);
+        background-color: var(--next-select-primary-color);
+      }
+
+      &.next-select-disabled {
+        cursor: not-allowed;
+        background-color: var(--next-select-disabled-color);
+
+        &:hover {
+          color: var(--next-select-font-color);
+        }
+      }
+
+      // Sub div wrapper for highlighting text
+      .next-select-search-highlight {
+        background-color: var(--next-select-highlight-color);
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Next-Select</title>
+  <style>
+    .samples {
+      width: 860px;
+      margin: 24px auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root">
+    <div class="samples row">
+      <div class="single">
+        <h2 id="sample-select-header">Single Select</h2>
+        <select id="nextSingle" aria-labelledby="sample-select-header">
+          <option data-placeholder="true"></option>
+          <option value="best">Best</option>
+          <option value="select">Select</option>
+          <option value="ever">Ever</option>
+        </select>
+      </div>
+      <div class="multi">
+        <h2>Multi Select</h2>
+        <select id="nextMulti" multiple>
+          <option value="best">Best</option>
+          <option value="select">Select</option>
+          <option value="ever">Ever</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="/index.ts"></script>
+</body>
+
+</html>
