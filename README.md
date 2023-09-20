@@ -4,7 +4,7 @@ A vanilla JS customisable select/dropdown box plugin
 
 ## Support
 
-![](https://raw.githubusercontent.com/lyove/next-select/master/public/next-select.gif)
+![](/public/next-select.gif)
 
 ## Features
 
