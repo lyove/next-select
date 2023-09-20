@@ -268,11 +268,12 @@ export default class Render {
         case "Escape":
           this.callbacks.close();
           return false;
+        default:
       }
     };
 
     // Add onclick for main div
-    main.onclick = (e: Event) => {
+    main.onclick = (_e: Event) => {
       // Dont do anything if disabled
       if (this.settings.disabled) {
         return;

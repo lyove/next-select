@@ -74,7 +74,7 @@ export default class Select {
 
   // This function get triggers when the select value changes
   // and will call the onValueChange function if it exists
-  public valueChange(ev: Event): boolean {
+  public valueChange(_ev: Event): boolean {
     if (this.listen && this.onValueChange) {
       this.onValueChange(this.getSelectedValues());
     }

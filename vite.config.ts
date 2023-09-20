@@ -1,61 +1,32 @@
-import fs from "fs";
-import path from "path";
+import * as path from "path";
 import { defineConfig } from "vite";
 import banner from "vite-plugin-banner";
-// import dts from "vite-plugin-dts";
 import packageJson from "./package.json";
 import styleInject from "./plugins/style-inject";
 
-// node version
-const major = process.version.match(/v([0-9]*).([0-9]*)/)[1];
-const minor = process.version.match(/v([0-9]*).([0-9]*)/)[2];
+const packageName = packageJson.name;
+const outputName = "next-select";
 
-/**
- * cpSync
- * @param {string} source
- * @param {string} destination
- */
-const cpSync = (source, destination) => {
-  if (Number(major) < 16 || (Number(major) == 16 && Number(minor) < 7)) {
-    if (fs.existsSync(destination)) {
-      fs.rmSync(destination, { recursive: true });
-    }
-
-    fs.mkdirSync(destination, { recursive: true });
-    const rd = fs.readdirSync(source);
-
-    for (const fd of rd) {
-      const sourceFullName = source + "/" + fd;
-      const destFullName = destination + "/" + fd;
-      const lstatRes = fs.lstatSync(sourceFullName);
-      if (lstatRes.isFile()) {
-        fs.copyFileSync(sourceFullName, destFullName);
-      }
-      if (lstatRes.isDirectory()) {
-        cpSync(sourceFullName, destFullName);
-      }
-    }
-  } else {
-    fs.cpSync(source, destination, { force: true, recursive: true });
-  }
-};
-
-const getPackageName = () => {
-  return packageJson.name;
-};
-
-const getPackageNameCamelCase = () => {
+const getPascalCaseName = () => {
   try {
-    return getPackageName().replace(/-./g, (char) => char[1].toUpperCase());
+    return packageName
+      .replace(new RegExp(/[-_]+/, "g"), " ")
+      .replace(new RegExp(/[^\w\s]/, "g"), "")
+      .replace(
+        new RegExp(/\s+(.)(\w+)/, "g"),
+        ($1, $2, $3) => `${$2.toUpperCase() + $3.toLowerCase()}`,
+      )
+      .replace(new RegExp(/\s/, "g"), "")
+      .replace(new RegExp(/\w/), (s) => s.toUpperCase());
   } catch (err) {
     throw new Error("Name property in package.json is missing.");
   }
 };
 
 const fileName = {
-  es: `${getPackageName()}.es.js`,
-  umd: `${getPackageName()}.umd.js`,
-  iife: `${getPackageName()}.iife.js`,
+  es: `${outputName}.es.js`,
+  umd: `${outputName}.umd.js`,
+  iife: `${outputName}.iife.js`,
 };
 
 const pkgInfo = `/**
@@ -68,47 +39,31 @@ const pkgInfo = `/**
  */`;
 
 export default defineConfig(({ command, mode }) => {
-  // when command line: vite
-  if (command === "serve") {
-    // do something
-  }
-  // when command line: vite build
-  else if (command === "build") {
-    // do something
-    // fs.rmdirSync("./dist", { recursive: true });
-  }
-
-  // such as command line: vite --mode development
-  if (mode === "development") {
-    // do something
-  }
-  // such as command line: vite build --mode production
-  else if (mode === "production") {
-    // do something
-  }
-
   return {
     base: "./",
     server: {
       port: 8080,
       https: false,
-      open: true
+      open: true,
+      hmr: {
+        overlay: false,
+      },
     },
     build: {
       lib: {
         entry: path.resolve(__dirname, "src/index.ts"),
-        name: getPackageNameCamelCase(),
+        name: getPascalCaseName(),
         formats: ["es", "umd", "iife"],
         fileName: (format) => fileName[format],
       },
+      rollupOptions: {
+        output: {
+          exports: "named",
+        },
+      },
+      copyPublicDir: false,
     },
-    plugins: [
-      banner(pkgInfo),
-      styleInject(),
-      // dts({
-      //   insertTypesEntry: true,
-      // }),
-    ],
+    plugins: [banner(pkgInfo), styleInject()],
     resolve: {
       alias: {
         "@/*": path.resolve(__dirname, "src"),

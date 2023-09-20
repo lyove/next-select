@@ -56,13 +56,13 @@ export function debounce<T extends (...args: any[]) => void>(
 }
 
 // reverseDebounce will call the function on the first call and then debounce
-function reverseDebounce<T extends (...args: any[]) => void>(func: T, timeout: number): T {
-  let timer: NodeJS.Timeout | null = null;
-  return function (...args: any[]): void {
-    if (!timer) func(...args);
-    timer = setTimeout(() => (timer = null), timeout);
-  } as T;
-}
+// function reverseDebounce<T extends (...args: any[]) => void>(func: T, timeout: number): T {
+//   let timer: NodeJS.Timeout | null = null;
+//   return function (...args: any[]): void {
+//     if (!timer) func(...args);
+//     timer = setTimeout(() => (timer = null), timeout);
+//   } as T;
+// }
 
 export function isEqual(a: any, b: any) {
   return JSON.stringify(a) === JSON.stringify(b);
